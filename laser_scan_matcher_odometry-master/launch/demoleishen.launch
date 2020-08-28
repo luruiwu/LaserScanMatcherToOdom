@@ -1,0 +1,24 @@
+<!-- 
+Example launch file: uses laser_scan_matcher together with
+slam_gmapping 
+-->
+<launch>
+
+  <param name="/use_sim_time" value="false"/>
+  <node pkg="talker" type="talker" name="talker">
+	<param name="serial_port" value="/dev/ttyUSB0"/>
+	<param name="scan_topic" value="scan"/>
+	<param name="laser_link" value="laser_link"/>
+  </node>
+
+  <node pkg="tf" type="static_transform_publisher" name="base_link_to_laser"
+    args="0.0 0.0 0.0 0.0 0.0 0.0 /base_link /laser_link 40" />
+
+
+  <node pkg="laser_scan_matcher_odometry" type="laser_scan_matcher_odometry_node"
+    name="laser_scan_matcher_odometry_node" output="screen">
+
+    <param name="max_iterations" value="10"/>
+  </node>
+
+</launch>

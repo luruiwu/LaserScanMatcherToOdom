@@ -1,0 +1,26 @@
+<!-- 
+Example launch file: uses laser_scan_matcher together with
+slam_gmapping 
+-->
+<launch>
+
+  <param name="/use_sim_time" value="false"/>
+  <node name="rplidarNode" pkg="rplidar_ros" type="rplidarNode" output="screen">
+  <param name="serial_port" type="string" value="/dev/ttyUSB0"/>
+  <param name="serial_buardate" type="int" value="256000"/>
+  <param name="frame_id" type="string" value="laser"/>
+  <param name="inverted" type="bool" value="false"/>
+  <param name="angle_compensate" type="bool" value="false"/>
+  </node>
+
+  <node pkg="tf" type="static_transform_publisher" name="base_link_to_laser"
+    args="0.0 0.0 0.0 0.0 0.0 0.0 /base_link /laser 40" />
+
+
+  <node pkg="laser_scan_matcher_odometry" type="laser_scan_matcher_odometry_node"
+    name="laser_scan_matcher_odometry_node" output="screen">
+
+    <param name="max_iterations" value="10"/>
+  </node>
+
+</launch>
